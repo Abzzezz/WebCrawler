@@ -37,4 +37,8 @@ public class CrawlerHandler {
     public List<String> getUrlsChecked() {
         return urlsChecked;
     }
+
+    public HashMap<String, Integer> getUrlAndCount() {
+        return urlAndCount;
+    }
 }

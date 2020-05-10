@@ -10,9 +10,11 @@ package net.bplaced.abzzezz;
 
 import net.bplaced.abzzezz.crawler.CrawlerHandler;
 
+import java.util.Map;
+
 public class Main {
 
-    private CrawlerHandler crawlerHandler = new CrawlerHandler("1312435235");
+    private CrawlerHandler crawlerHandler = new CrawlerHandler("Test");
     private static Main ins = new Main();
 
     public void startThread() {

@@ -16,6 +16,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class Crawler extends Thread {
 
@@ -34,12 +35,20 @@ public class Crawler extends Thread {
     public void run() {
         try {
             System.out.println(url);
+
+            if (Main.getInstance().getCrawlerHandler().getUrlsChecked().size() > 300) {
+                for (Map.Entry<String, Integer> stringIntegerEntry : Main.getInstance().getCrawlerHandler().getUrlAndCount().entrySet()) {
+                    System.out.println(stringIntegerEntry);
+                }
+                Runtime.getRuntime().exit(0);
+            }
+
             Document doc = Jsoup.connect(url).get();
             Document textContents = Jsoup.parse(doc.outerHtml());
             String content = textContents.wholeText();
 
             if (getCrawledWords(content).size() != 0) {
-
+                Main.getInstance().getCrawlerHandler().getUrlAndCount().put(url, getCrawledWords(content).size());
             }
 
             Elements urls = doc.select("a[href*=https]");
@@ -50,9 +59,7 @@ public class Crawler extends Thread {
                     Main.getInstance().getCrawlerHandler().newCrawler(newUrl);
                 }
             }
-
             interrupt();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
