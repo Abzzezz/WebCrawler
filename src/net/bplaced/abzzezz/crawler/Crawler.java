@@ -1,27 +1,27 @@
 /*
  * Copyright (c) 2020. Roman P.
  * All code is owned by Roman P. APIs are mentioned.
- * Last modified: 10.05.20, 13:09
+ * Last modified: 10.05.20, 20:38
  * Uses:
  *  Abzzezz Util (c) Roman P.
  */
 
 package net.bplaced.abzzezz.crawler;
 
+import ga.abzzezz.util.logging.Logger;
 import net.bplaced.abzzezz.Main;
+import net.bplaced.abzzezz.util.Util;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Map;
 
 public class Crawler extends Thread {
 
-    private String url;
-    private String keyword;
+    private final String url;
+    private final String keyword;
 
     public Crawler(String url, String keyword) {
         this.url = url;
@@ -34,27 +34,25 @@ public class Crawler extends Thread {
     @Override
     public void run() {
         try {
-            System.out.println(url);
-
-            if (Main.getInstance().getCrawlerHandler().getUrlsChecked().size() > 300) {
-                for (Map.Entry<String, Integer> stringIntegerEntry : Main.getInstance().getCrawlerHandler().getUrlAndCount().entrySet()) {
-                    System.out.println(stringIntegerEntry);
-                }
-                Runtime.getRuntime().exit(0);
-            }
+            Logger.log("Got URL: " + url, Logger.LogType.INFO);
 
             Document doc = Jsoup.connect(url).get();
             Document textContents = Jsoup.parse(doc.outerHtml());
-            String content = textContents.wholeText();
+            int amount = getCrawledWords(textContents.wholeText());
 
-            if (getCrawledWords(content).size() != 0) {
-                Main.getInstance().getCrawlerHandler().getUrlAndCount().put(url, getCrawledWords(content).size());
-            }
+            /**
+             * Write to file if the amount of keywords found on the site != 0
+             */
+            if (amount != 0)
+                Main.getInstance().getCrawlerHandler().writeToFile("URL:" + url + " Entries found: " + amount);
 
+            /**
+             * Search and run URLS
+             */
             Elements urls = doc.select("a[href*=https]");
             for (Element element : urls) {
                 String newUrl = element.attr("abs:href");
-                if (!Main.getInstance().getCrawlerHandler().getUrlsChecked().contains(newUrl)) {
+                if (!containsURLInCase(newUrl)) {
                     Main.getInstance().getCrawlerHandler().getUrlsChecked().add(newUrl);
                     Main.getInstance().getCrawlerHandler().newCrawler(newUrl);
                 }
@@ -66,22 +64,21 @@ public class Crawler extends Thread {
         super.run();
     }
 
+    private boolean containsURLInCase(String in) {
+        String cont = in;
+        if(cont.contains("=")) cont.substring(0, cont.indexOf("="));
+        return Main.getInstance().getCrawlerHandler().getUrlsChecked().contains(cont);
+    }
+
     @Override
     public void interrupt() {
-        System.out.println("Thread: " + getName() + " interrupted");
+        Main.getInstance().getCrawlerHandler().getCrawlers().remove(this);
+        Logger.log("Thread: " + getName() + " interrupted - no further websites found", Logger.LogType.INFO);
         super.interrupt();
     }
 
-    public ArrayList<Integer> getCrawledWords(String in) {
-        ArrayList<Integer> crawled = new ArrayList<>();
-        StringBuilder stringBuilder = new StringBuilder(in);
-        for (int i = 0; i < in.length(); i++) {
-            int lastIndex = stringBuilder.indexOf(keyword);
-            if (lastIndex == -1) break;
-            int end = lastIndex + keyword.length();
-            crawled.add(lastIndex);
-            stringBuilder.delete(lastIndex, end);
-        }
-        return crawled;
+    private int getCrawledWords(String in) {
+        return Util.getCrawledWords(in, keyword).size();
     }
+
 }

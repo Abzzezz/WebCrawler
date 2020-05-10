@@ -1,33 +1,55 @@
 /*
  * Copyright (c) 2020. Roman P.
  * All code is owned by Roman P. APIs are mentioned.
- * Last modified: 10.05.20, 13:13
+ * Last modified: 10.05.20, 20:06
  * Uses:
  *  Abzzezz Util (c) Roman P.
  */
 
 package net.bplaced.abzzezz.crawler;
 
-import java.util.HashMap;
+import ga.abzzezz.util.data.FileUtil;
+import ga.abzzezz.util.logging.Logger;
+import net.bplaced.abzzezz.Main;
+import net.bplaced.abzzezz.util.Util;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
 public class CrawlerHandler {
 
-    private List<Crawler> crawlers = new LinkedList<>();
-    private List<String> urlsChecked = new LinkedList<>();
-    private HashMap<String, Integer> urlAndCount  = new HashMap<>();
+    private final List<Crawler> crawlers = new LinkedList<>();
+    private final List<String> urlsChecked = new LinkedList<>();
 
-    private String keyword;
+    private final String keyword;
+    private final File fileIn;
 
-    public CrawlerHandler(String keyword) {
-        this.keyword = keyword;
+    public CrawlerHandler() {
+        this.keyword = Main.getInstance().getKeyword();
+        this.fileIn = new File("C:\\Users\\kursc\\outfile.txt");
+        if (!fileIn.exists()) {
+            try {
+                fileIn.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        writeToFile("Searching for keyword:" + keyword);
     }
 
     public void newCrawler(String url) {
-        Crawler crawler = new Crawler(url, keyword);
-        crawlers.add(crawler);
-        crawler.run();
+        if (Util.runState != Util.RunState.INTERRUPTED) {
+            Crawler crawler = new Crawler(url, keyword);
+            Logger.log("New Crawler Thread running: " + crawler.getName(), Logger.LogType.INFO);
+            crawlers.add(crawler);
+            crawler.run();
+        }
+    }
+
+    public void writeToFile(String in) {
+        FileUtil.appendToFile(in, fileIn, true);
     }
 
     public List<Crawler> getCrawlers() {
@@ -38,7 +60,4 @@ public class CrawlerHandler {
         return urlsChecked;
     }
 
-    public HashMap<String, Integer> getUrlAndCount() {
-        return urlAndCount;
-    }
 }

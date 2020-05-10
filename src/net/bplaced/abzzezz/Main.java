@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2020. Roman P.
  * All code is owned by Roman P. APIs are mentioned.
- * Last modified: 10.05.20, 13:19
+ * Last modified: 10.05.20, 20:06
  * Uses:
  *  Abzzezz Util (c) Roman P.
  */
@@ -10,22 +10,52 @@ package net.bplaced.abzzezz;
 
 import net.bplaced.abzzezz.crawler.CrawlerHandler;
 
-import java.util.Map;
-
 public class Main {
 
-    private CrawlerHandler crawlerHandler = new CrawlerHandler("Test");
-    private static Main ins = new Main();
+    private static final Main ins = new Main();
+    /**
+     *
+     */
+    private CrawlerHandler crawlerHandler;
+    private String keyword, url;
 
+    public static Main getInstance() {
+        return ins;
+    }
+
+    /**
+     *
+     */
     public void startThread() {
-        crawlerHandler.newCrawler("https://stackoverflow.com/questions/40769548/how-to-retrieve-a-url-from-a-link-on-a-website-using-jsoup");
+        this.crawlerHandler = new CrawlerHandler();
+        crawlerHandler.newCrawler(url);
+    }
+
+    public void interruptAll() {
+        crawlerHandler.getCrawlers().forEach(crawler -> {
+            crawler.interrupt();
+        });
+    }
+
+    public void proceedAll() {
+        crawlerHandler.getCrawlers().forEach(crawler -> {
+            crawler.start();
+        });
     }
 
     public CrawlerHandler getCrawlerHandler() {
         return crawlerHandler;
     }
 
-    public static Main getInstance() {
-        return ins;
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }
