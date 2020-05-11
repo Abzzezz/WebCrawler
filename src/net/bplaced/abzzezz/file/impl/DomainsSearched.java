@@ -9,7 +9,6 @@
 package net.bplaced.abzzezz.file.impl;
 
 import ga.abzzezz.util.data.FileUtil;
-import ga.abzzezz.util.misc.TimeUtil;
 import net.bplaced.abzzezz.Main;
 import net.bplaced.abzzezz.file.CustomFile;
 import net.bplaced.abzzezz.utils.Util;
@@ -25,8 +24,7 @@ public class DomainsSearched extends CustomFile {
 
     @Override
     public void write() {
-        FileUtil.writeArrayListToFile(Main.getInstance().getCrawlerHandler().getUrlsChecked(), thisFile);
-
+        FileUtil.writeArrayListToFile(Util.getDomainList(), thisFile);
         FileUtil.appendToFile("Time Elapsed: " + TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis() - Util.startTime), thisFile, true);
         FileUtil.appendToFile("Last Crawlers active: " + Main.getInstance().getCrawlerHandler().getCrawlers().size(), thisFile, true);
 

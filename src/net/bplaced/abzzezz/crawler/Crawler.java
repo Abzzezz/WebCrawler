@@ -17,7 +17,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.util.List;
 
 public class Crawler extends Thread {
 
@@ -52,29 +51,19 @@ public class Crawler extends Thread {
             Elements https = doc.select("a[href*=https]");
             for (Element element : https) {
                 String newUrl = element.attr("abs:href");
-                if (!containsURLInCase(newUrl)) {
+                if (!Util.containsURLInCase(newUrl)) {
                     Main.getInstance().getCrawlerHandler().getUrlsChecked().add(newUrl);
                     Main.getInstance().getCrawlerHandler().newCrawler(newUrl);
                 }
             }
             interrupt();
         } catch (IOException e) {
+            Logger.log("Url not found", Logger.LogType.ERROR);
             e.printStackTrace();
         }
         super.run();
     }
 
-    private boolean containsURLInCase(String in) {
-        List<String> copy = Main.getInstance().getCrawlerHandler().getUrlsChecked();
-        String last = (copy.size() > 5) ? copy.get(copy.size() - 1) : "";
-        if (last.contains("=") && in.contains("=")) {
-            if (last.split("=")[0].equalsIgnoreCase(in.split("=")[0])) {
-                Logger.log("Similar seeming URL found:" + in + "  To:" + last, Logger.LogType.INFO);
-                return true;
-            }
-        }
-        return Main.getInstance().getCrawlerHandler().getUrlsChecked().contains(in);
-    }
 
     @Override
     public void interrupt() {

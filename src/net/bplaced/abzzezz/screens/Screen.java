@@ -17,12 +17,13 @@ import java.util.List;
 
 public class Screen {
 
-    private List<Button> buttons = new ArrayList<>();
+    private final List<Button> buttons = new ArrayList<>();
 
     /**
      * Int method to add things like buttons etc.
      */
-    public void init() {}
+    public void init() {
+    }
 
     /**
      * Gets called when button is pressed then looks for action event

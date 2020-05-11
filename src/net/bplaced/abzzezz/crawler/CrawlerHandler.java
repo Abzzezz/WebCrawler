@@ -35,7 +35,7 @@ public class CrawlerHandler {
                 e.printStackTrace();
             }
         }
-        writeToFile("Searching for keyword:" + keyword);
+        writeToFile("[Searching for keyword:" + keyword + "]");
     }
 
     public void newCrawler(String url) {

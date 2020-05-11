@@ -31,7 +31,9 @@ public class EngineCore {
     private float gameVersion;
     private Screen screen;
     private File mainDir;
-    private int fpsSync, width, height;
+    private int fpsSync;
+    private final int width;
+    private final int height;
 
     /*
     Handlers
@@ -145,6 +147,7 @@ public class EngineCore {
 
     /**
      * Init GL Method to initialise OpenGL
+     *
      * @param width
      * @param height
      */
@@ -193,7 +196,6 @@ public class EngineCore {
 
     /**
      * Getters and setters to configure
-     *
      */
 
     public String getGameName() {
@@ -241,16 +243,16 @@ public class EngineCore {
         return fontDir;
     }
 
+    public void setFontDir(String fontDir) {
+        this.fontDir = fontDir;
+    }
+
     public FileManager getFileManager() {
         return fileManager;
     }
 
     public void setFileManager(FileManager fileManager) {
         this.fileManager = fileManager;
-    }
-
-    public void setFontDir(String fontDir) {
-        this.fontDir = fontDir;
     }
 
 }

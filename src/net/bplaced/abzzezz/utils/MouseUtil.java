@@ -17,6 +17,7 @@ public class MouseUtil {
 
     /**
      * Checks if mouse in a quad radius
+     *
      * @param xPos
      * @param yPos
      * @param width
@@ -30,6 +31,7 @@ public class MouseUtil {
 
     /**
      * Mouse positions
+     *
      * @return
      */
     private static int[] getMousePositions() {

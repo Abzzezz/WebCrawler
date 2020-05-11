@@ -20,12 +20,15 @@ import java.awt.*;
 public class Button {
 
     private String text;
-    private float xPos, yPos, id;
+    private final float xPos;
+    private final float yPos;
+    private final float id;
 
-    private FontUtil smallFont = new FontUtil("SIMPLIFICA", 20);
+    private final FontUtil smallFont = new FontUtil("SIMPLIFICA", 20);
 
     /**
      * Simple button. Buttons can be added just use this as a parent
+     *
      * @param id
      * @param text
      * @param xPos
@@ -40,7 +43,7 @@ public class Button {
 
     public void drawButton() {
         RenderUtil.drawQuad(xPos - 20, yPos, 100, getDimensions()[1], Util.getDefaultColor());
-        smallFont.drawString(text, xPos, yPos, isButtonHovered() ? new Color(-1): Color.GRAY);
+        smallFont.drawString(text, xPos, yPos, isButtonHovered() ? new Color(-1) : Color.GRAY);
     }
 
     public boolean isButtonHovered() {
