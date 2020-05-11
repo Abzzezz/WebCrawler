@@ -11,7 +11,6 @@ package net.bplaced.abzzezz.crawler;
 import ga.abzzezz.util.data.FileUtil;
 import ga.abzzezz.util.logging.Logger;
 import net.bplaced.abzzezz.Main;
-import net.bplaced.abzzezz.util.Util;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,12 +39,10 @@ public class CrawlerHandler {
     }
 
     public void newCrawler(String url) {
-        if (Util.runState != Util.RunState.INTERRUPTED) {
-            Crawler crawler = new Crawler(url, keyword);
-            Logger.log("New Crawler Thread running: " + crawler.getName(), Logger.LogType.INFO);
-            crawlers.add(crawler);
-            crawler.run();
-        }
+        Crawler crawler = new Crawler(url, keyword);
+        Logger.log("New Crawler Thread running: " + crawler.getName(), Logger.LogType.INFO);
+        crawlers.add(crawler);
+        crawler.run();
     }
 
     public void writeToFile(String in) {

@@ -10,10 +10,10 @@
 
 package net.bplaced.abzzezz.screens;
 
-import net.bplaced.abzzezz.util.Util;
 import net.bplaced.abzzezz.utils.FontUtil;
 import net.bplaced.abzzezz.utils.MouseUtil;
 import net.bplaced.abzzezz.utils.RenderUtil;
+import net.bplaced.abzzezz.utils.Util;
 
 import java.awt.*;
 
@@ -40,8 +40,7 @@ public class Button {
 
     public void drawButton() {
         RenderUtil.drawQuad(xPos - 20, yPos, 100, getDimensions()[1], Util.getDefaultColor());
-
-        smallFont.drawString(text, xPos, yPos, isButtonHovered() ? new Color(0xAB89EE): Color.GRAY);
+        smallFont.drawString(text, xPos, yPos, isButtonHovered() ? new Color(-1): Color.GRAY);
     }
 
     public boolean isButtonHovered() {

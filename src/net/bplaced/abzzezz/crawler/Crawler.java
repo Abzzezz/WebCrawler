@@ -10,13 +10,14 @@ package net.bplaced.abzzezz.crawler;
 
 import ga.abzzezz.util.logging.Logger;
 import net.bplaced.abzzezz.Main;
-import net.bplaced.abzzezz.util.Util;
+import net.bplaced.abzzezz.utils.Util;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.List;
 
 public class Crawler extends Thread {
 
@@ -35,7 +36,6 @@ public class Crawler extends Thread {
     public void run() {
         try {
             Logger.log("Got URL: " + url, Logger.LogType.INFO);
-
             Document doc = Jsoup.connect(url).get();
             Document textContents = Jsoup.parse(doc.outerHtml());
             int amount = getCrawledWords(textContents.wholeText());
@@ -47,10 +47,10 @@ public class Crawler extends Thread {
                 Main.getInstance().getCrawlerHandler().writeToFile("URL:" + url + " Entries found: " + amount);
 
             /**
-             * Search and run URLS
+             * Search and run URLS (https)
              */
-            Elements urls = doc.select("a[href*=https]");
-            for (Element element : urls) {
+            Elements https = doc.select("a[href*=https]");
+            for (Element element : https) {
                 String newUrl = element.attr("abs:href");
                 if (!containsURLInCase(newUrl)) {
                     Main.getInstance().getCrawlerHandler().getUrlsChecked().add(newUrl);
@@ -65,9 +65,15 @@ public class Crawler extends Thread {
     }
 
     private boolean containsURLInCase(String in) {
-        String cont = in;
-        if(cont.contains("=")) cont.substring(0, cont.indexOf("="));
-        return Main.getInstance().getCrawlerHandler().getUrlsChecked().contains(cont);
+        List<String> copy = Main.getInstance().getCrawlerHandler().getUrlsChecked();
+        String last = (copy.size() > 5) ? copy.get(copy.size() - 1) : "";
+        if (last.contains("=") && in.contains("=")) {
+            if (last.split("=")[0].equalsIgnoreCase(in.split("=")[0])) {
+                Logger.log("Similar seeming URL found:" + in + "  To:" + last, Logger.LogType.INFO);
+                return true;
+            }
+        }
+        return Main.getInstance().getCrawlerHandler().getUrlsChecked().contains(in);
     }
 
     @Override

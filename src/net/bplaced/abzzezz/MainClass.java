@@ -8,6 +8,7 @@
 
 package net.bplaced.abzzezz;
 
+import net.bplaced.abzzezz.file.impl.DomainsSearched;
 import net.bplaced.abzzezz.ui.MainUi;
 
 public class MainClass {
@@ -20,6 +21,7 @@ public class MainClass {
     public static void main(String[] args) {
         EngineCore engineCore = new EngineCore(500, 700, new MainUi());
         engineCore.setGameName("Web Crawler");
+        engineCore.getFileManager().getFiles().add(new DomainsSearched());
         engineCore.start();
     }
 }
