@@ -1,9 +1,12 @@
 /*
  * Copyright (c) 2020. Roman P.
  * All code is owned by Roman P. APIs are mentioned.
- * Last modified: 10.05.20, 20:38
+ * Last modified: 12.05.20, 14:18
  * Uses:
- *  Abzzezz Util (c) Roman P.
+ * Abzzezz Util (c) Roman P.
+ * LWJGL Engine (c) Roman P.
+ * JSoup https://jsoup.org/
+ *
  */
 
 package net.bplaced.abzzezz.crawler;
@@ -48,19 +51,9 @@ public class Crawler extends Thread {
             }
 
             /**
-             * Search and run URLS (https)
+             * Search and process URLS
              */
-            Elements https = doc.select("a[href*=https]");
-
-            if(https.isEmpty()) interrupt();
-
-            for (Element element : https) {
-                String newUrl = element.attr("abs:href");
-                if (!Util.containsURLInCase(newUrl)) {
-                    Main.getInstance().getCrawlerHandler().getUrlsChecked().add(newUrl);
-                    Main.getInstance().getCrawlerHandler().newCrawler(newUrl);
-                }
-            }
+            processLink(doc);
 
             Logger.log("Finished website: " + url, Logger.LogType.INFO);
             interrupt();
@@ -73,10 +66,24 @@ public class Crawler extends Thread {
     }
 
 
+    public void processLink(Document document) throws IOException {
+        Elements https = document.select("a[href]");
+        if (https.isEmpty()) interrupt();
+        for (Element element : https) {
+            String newUrl = element.attr("abs:href");
+            if (!Util.containsURLInCase(newUrl)) {
+                Main.getInstance().getCrawlerHandler().getUrlsChecked().add(newUrl);
+                Main.getInstance().getCrawlerHandler().newCrawler(newUrl);
+            }
+        }
+    }
+
+
     @Override
     public void interrupt() {
         Main.getInstance().getCrawlerHandler().getCrawlers().remove(this);
         Logger.log("Thread: " + getName() + " interrupted - no further websites found", Logger.LogType.INFO);
+        this.stop();
         super.interrupt();
     }
 

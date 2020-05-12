@@ -96,7 +96,6 @@ public class EngineCore {
         /*
         Create directory if it does not exists
          */
-        if (!mainDir.exists()) mainDir.mkdir();
 
         this.fileManager = new FileManager();
     }
@@ -105,6 +104,8 @@ public class EngineCore {
      * Start method. Must be called after configuring
      */
     public void start() {
+        if (!mainDir.exists()) mainDir.mkdir();
+
         /*
         For Debug purposes
          */

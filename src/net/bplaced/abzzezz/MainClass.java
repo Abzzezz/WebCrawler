@@ -13,6 +13,8 @@ import net.bplaced.abzzezz.file.impl.InfoFile;
 import net.bplaced.abzzezz.file.impl.WebsitesSearched;
 import net.bplaced.abzzezz.ui.MainUi;
 
+import java.io.File;
+
 public class MainClass {
 
     /**
@@ -23,6 +25,7 @@ public class MainClass {
     public static void main(String[] args) {
         EngineCore engineCore = new EngineCore(500, 700, new MainUi());
         engineCore.setGameName("Web Crawler");
+        if (args.length > 0) engineCore.setMainDir(new File(args[0]));
         engineCore.getFileManager().getFiles().add(new DomainsSearched());
         engineCore.getFileManager().getFiles().add(new WebsitesSearched());
         engineCore.getFileManager().getFiles().add(new InfoFile());

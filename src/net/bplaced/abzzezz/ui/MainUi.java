@@ -1,9 +1,12 @@
 /*
  * Copyright (c) 2020. Roman P.
  * All code is owned by Roman P. APIs are mentioned.
- * Last modified: 10.05.20, 20:45
+ * Last modified: 11.05.20, 16:59
  * Uses:
- *  Abzzezz Util (c) Roman P.
+ * Abzzezz Util (c) Roman P.
+ * LWJGL Engine (c) Roman P.
+ * JSoup https://jsoup.org/
+ *
  */
 
 package net.bplaced.abzzezz.ui;

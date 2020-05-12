@@ -1,15 +1,19 @@
 /*
  * Copyright (c) 2020. Roman P.
  * All code is owned by Roman P. APIs are mentioned.
- * Last modified: 10.05.20, 20:06
+ * Last modified: 12.05.20, 14:17
  * Uses:
- *  Abzzezz Util (c) Roman P.
+ * Abzzezz Util (c) Roman P.
+ * LWJGL Engine (c) Roman P.
+ * JSoup https://jsoup.org/
+ *
  */
 
 package net.bplaced.abzzezz.crawler;
 
 import ga.abzzezz.util.data.FileUtil;
 import ga.abzzezz.util.logging.Logger;
+import net.bplaced.abzzezz.EngineCore;
 import net.bplaced.abzzezz.Main;
 
 import java.io.File;
@@ -27,7 +31,7 @@ public class CrawlerHandler {
 
     public CrawlerHandler() {
         this.keyword = Main.getInstance().getKeyword();
-        this.fileIn = new File("C:\\Users\\kursc\\outfile.txt");
+        this.fileIn = new File(EngineCore.getInstance().getMainDir(), "outfile.txt");
         if (!fileIn.exists()) {
             try {
                 fileIn.createNewFile();
