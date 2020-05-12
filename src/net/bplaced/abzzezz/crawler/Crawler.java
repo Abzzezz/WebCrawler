@@ -42,8 +42,10 @@ public class Crawler extends Thread {
             /**
              * Write to file if the amount of keywords found on the site != 0
              */
-            if (amount != 0)
+            if (amount != 0) {
                 Main.getInstance().getCrawlerHandler().writeToFile("URL:" + url + " Entries found: " + amount);
+                Main.getInstance().setEntriesFound(Main.getInstance().getEntriesFound() + amount);
+            }
 
             /**
              * Search and run URLS (https)

@@ -18,6 +18,7 @@ public class Main {
      */
     private CrawlerHandler crawlerHandler;
     private String keyword, url;
+    private int entriesFound;
 
     public static Main getInstance() {
         return ins;
@@ -45,5 +46,13 @@ public class Main {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public int getEntriesFound() {
+        return entriesFound;
+    }
+
+    public void setEntriesFound(int entriesFound) {
+        this.entriesFound = entriesFound;
     }
 }

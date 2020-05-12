@@ -92,6 +92,7 @@ public class EngineCore {
     private void initHeaders() {
         instance = this;
         Logger.log("Initialising headers", Logger.LogType.INFO);
+
         /*
         Create directory if it does not exists
          */

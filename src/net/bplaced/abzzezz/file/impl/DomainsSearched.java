@@ -9,24 +9,19 @@
 package net.bplaced.abzzezz.file.impl;
 
 import ga.abzzezz.util.data.FileUtil;
-import net.bplaced.abzzezz.Main;
 import net.bplaced.abzzezz.file.CustomFile;
 import net.bplaced.abzzezz.utils.Util;
-
-import java.util.concurrent.TimeUnit;
 
 public class DomainsSearched extends CustomFile {
 
     public DomainsSearched() {
-        super("DomainsSearched.txt");
+        super("Domains-searched.txt");
     }
 
 
     @Override
     public void write() {
         FileUtil.writeArrayListToFile(Util.getDomainList(), thisFile);
-        FileUtil.appendToFile("Time Elapsed: " + TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis() - Util.startTime), thisFile, true);
-        FileUtil.appendToFile("Last Crawlers active: " + Main.getInstance().getCrawlerHandler().getCrawlers().size(), thisFile, true);
         super.write();
     }
 }
