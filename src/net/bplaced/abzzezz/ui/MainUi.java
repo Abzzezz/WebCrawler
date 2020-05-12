@@ -55,7 +55,7 @@ public class MainUi extends Screen {
     public void drawScreen() {
         fontUtil.drawString("Web Crawler", 0, 0, Util.getDefaultColor());
         if (Main.getInstance().getCrawlerHandler() != null) {
-            String s = "Crawlers active: " + Main.getInstance().getCrawlerHandler().getCrawlers().size();
+            String s = "Crawlers active: " + Runtime.getRuntime().availableProcessors() / 2;
             smaller.drawString(s, getWidth() - smaller.getStringWidth(s), 0, Util.getDefaultColor());
             String s1 = "Websites searched: " + Main.getInstance().getCrawlerHandler().getUrlsChecked().size();
             smaller.drawString(s1, getWidth() - smaller.getStringWidth(s1), smaller.getHeight() * 2, Util.getDefaultColor());

@@ -11,6 +11,7 @@
 
 package net.bplaced.abzzezz.utils;
 
+import ga.abzzezz.util.stringing.StringUtil;
 import net.bplaced.abzzezz.Main;
 
 import java.awt.*;
@@ -25,43 +26,63 @@ public class Util {
      * Default set to white
      */
     public static Color backgroundColor = Color.WHITE;
+    /**
+     * Start time to calculate running time
+     */
     public static long startTime;
 
-    public static ArrayList<Integer> getCrawledWords(String in, String keyword) {
-        ArrayList<Integer> crawled = new ArrayList<>();
+    /**
+     * Rewritten to just count and dont actually add to list
+     * @param in
+     * @param keyword
+     * @return
+     */
+    public static int getCrawledWords(String in, String keyword) {
+        int count = 0;
         StringBuilder stringBuilder = new StringBuilder(in);
         for (int i = 0; i < in.length(); i++) {
             int lastIndex = stringBuilder.indexOf(keyword);
             if (lastIndex == -1) break;
             int end = lastIndex + keyword.length();
-            crawled.add(lastIndex);
+            count++;
             stringBuilder.delete(lastIndex, end);
         }
-        return crawled;
+        return count;
     }
 
+    /**
+     *
+     * @return
+     */
     public static Color getDefaultColor() {
         return new Color(0xFF5A99B5);
     }
 
-    public static boolean containsURLInCase(String in) throws MalformedURLException {
-        List<String> copy = Main.getInstance().getCrawlerHandler().getUrlsChecked();
+    /**
+     * NEW!! NOW USING COPYONWRITEARRAYS! WOW
+     * @param in
+     * @return
+     * @throws MalformedURLException
+     *
+     */
+    public synchronized static boolean containsURLInCase(String in) throws MalformedURLException {
+        List<String> copy =  Main.getInstance().getCrawlerHandler().getUrlsChecked();
         for (String s : copy) {
             URL path = new URL(in);
             URL pathLast = new URL(s);
             if (!path.getPath().isEmpty() && !pathLast.getPath().isEmpty()) {
-                if (path.getPath().equalsIgnoreCase(pathLast.getPath())) {
-                    return true;
-                }
+                if (path.getPath().equalsIgnoreCase(pathLast.getPath())) return true;
             }
 
-            if (copy.contains(in)) {
-                return true;
-            }
+            if (copy.contains(in)) return true;
         }
         return false;
     }
 
+    /**
+     *
+     * @return
+     */
     public static List<String> getDomainList() {
         List<String> domains = new ArrayList<>();
         Main.getInstance().getCrawlerHandler().getUrlsChecked().forEach(s -> {

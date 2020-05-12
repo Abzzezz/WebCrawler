@@ -30,7 +30,6 @@ public class InfoFile extends CustomFile {
     public void write() {
 
         String[] strings = {"Time Elapsed: " + TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis() - Util.startTime) + " Minutes",
-                "Last Crawlers active: " + Main.getInstance().getCrawlerHandler().getCrawlers().size(),
                 "Total Websites searched:" + Main.getInstance().getCrawlerHandler().getUrlsChecked().size(),
                 "Total Entries of keyword: " + Main.getInstance().getKeyword() + " :" + Main.getInstance().getEntriesFound()
         };

@@ -12,25 +12,26 @@
 package net.bplaced.abzzezz.crawler;
 
 import ga.abzzezz.util.data.FileUtil;
-import ga.abzzezz.util.logging.Logger;
 import net.bplaced.abzzezz.EngineCore;
 import net.bplaced.abzzezz.Main;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class CrawlerHandler {
 
-    private final List<Crawler> crawlers = new LinkedList<>();
-    private final List<String> urlsChecked = new LinkedList<>();
-
-    private final String keyword;
+    /**
+     * Header
+     */
+    private final List<String> urlsChecked = new CopyOnWriteArrayList<>();
+    private final ExecutorService executor;
     private final File fileIn;
 
     public CrawlerHandler() {
-        this.keyword = Main.getInstance().getKeyword();
         this.fileIn = new File(EngineCore.getInstance().getMainDir(), "outfile.txt");
         if (!fileIn.exists()) {
             try {
@@ -39,26 +40,20 @@ public class CrawlerHandler {
                 e.printStackTrace();
             }
         }
-        writeToFile("[Searching for keyword:" + keyword + "]");
+        writeToFile("[Searching for keyword:" + Main.getInstance().getKeyword() + "]");
+        this.executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() / 2);;
     }
 
     public void newCrawler(String url) {
-        Crawler crawler = new Crawler(url, keyword);
-        //Logger.log("New Crawler Thread running: " + crawler.getName(), Logger.LogType.INFO);
-        crawlers.add(crawler);
-        crawler.run();
+        Crawler crawler = new Crawler(url, Main.getInstance().getKeyword());
+        executor.submit(crawler);
     }
 
     public void writeToFile(String in) {
         FileUtil.appendToFile(in, fileIn, true);
     }
 
-    public List<Crawler> getCrawlers() {
-        return crawlers;
-    }
-
     public List<String> getUrlsChecked() {
         return urlsChecked;
     }
-
 }

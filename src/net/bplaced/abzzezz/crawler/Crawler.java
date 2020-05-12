@@ -23,8 +23,7 @@ import java.io.IOException;
 
 public class Crawler extends Thread {
 
-    private final String url;
-    private final String keyword;
+    private final String url, keyword;
 
     public Crawler(String url, String keyword) {
         this.url = url;
@@ -54,9 +53,6 @@ public class Crawler extends Thread {
              * Search and process URLS
              */
             processLink(doc);
-
-            Logger.log("Finished website: " + url, Logger.LogType.INFO);
-            interrupt();
         } catch (IOException e) {
             Logger.log("Url not found", Logger.LogType.ERROR);
             interrupt();
@@ -65,10 +61,14 @@ public class Crawler extends Thread {
         super.run();
     }
 
-
+    /**
+     * Search for links then add to checked and submit new crawler
+     * when all links are found interrupt thread
+     * @param document
+     * @throws IOException
+     */
     public void processLink(Document document) throws IOException {
         Elements https = document.select("a[href]");
-        if (https.isEmpty()) interrupt();
         for (Element element : https) {
             String newUrl = element.attr("abs:href");
             if (!Util.containsURLInCase(newUrl)) {
@@ -76,19 +76,25 @@ public class Crawler extends Thread {
                 Main.getInstance().getCrawlerHandler().newCrawler(newUrl);
             }
         }
+        interrupt();
     }
 
-
+    /**
+     *
+     */
     @Override
     public void interrupt() {
-        Main.getInstance().getCrawlerHandler().getCrawlers().remove(this);
         Logger.log("Thread: " + getName() + " interrupted - no further websites found", Logger.LogType.INFO);
-        this.stop();
         super.interrupt();
     }
 
+    /**
+     *
+     * @param in
+     * @return
+     */
     private int getCrawledWords(String in) {
-        return Util.getCrawledWords(in, keyword).size();
+        return Util.getCrawledWords(in, keyword);
     }
 
 }
