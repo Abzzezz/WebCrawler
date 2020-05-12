@@ -31,18 +31,6 @@ public class Main {
         crawlerHandler.newCrawler(url);
     }
 
-    public void interruptAll() {
-        crawlerHandler.getCrawlers().forEach(crawler -> {
-            crawler.interrupt();
-        });
-    }
-
-    public void proceedAll() {
-        crawlerHandler.getCrawlers().forEach(crawler -> {
-            crawler.start();
-        });
-    }
-
     public CrawlerHandler getCrawlerHandler() {
         return crawlerHandler;
     }

@@ -27,7 +27,6 @@ public class DomainsSearched extends CustomFile {
         FileUtil.writeArrayListToFile(Util.getDomainList(), thisFile);
         FileUtil.appendToFile("Time Elapsed: " + TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis() - Util.startTime), thisFile, true);
         FileUtil.appendToFile("Last Crawlers active: " + Main.getInstance().getCrawlerHandler().getCrawlers().size(), thisFile, true);
-
         super.write();
     }
 }

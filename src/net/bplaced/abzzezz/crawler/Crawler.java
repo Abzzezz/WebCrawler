@@ -49,6 +49,9 @@ public class Crawler extends Thread {
              * Search and run URLS (https)
              */
             Elements https = doc.select("a[href*=https]");
+
+            if(https.isEmpty()) interrupt();
+
             for (Element element : https) {
                 String newUrl = element.attr("abs:href");
                 if (!Util.containsURLInCase(newUrl)) {
@@ -56,9 +59,12 @@ public class Crawler extends Thread {
                     Main.getInstance().getCrawlerHandler().newCrawler(newUrl);
                 }
             }
+
+            Logger.log("Finished website: " + url, Logger.LogType.INFO);
             interrupt();
         } catch (IOException e) {
             Logger.log("Url not found", Logger.LogType.ERROR);
+            interrupt();
             e.printStackTrace();
         }
         super.run();

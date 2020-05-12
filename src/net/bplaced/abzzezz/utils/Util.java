@@ -10,7 +10,6 @@
 
 package net.bplaced.abzzezz.utils;
 
-import ga.abzzezz.util.logging.Logger;
 import net.bplaced.abzzezz.Main;
 
 import java.awt.*;
@@ -46,38 +45,26 @@ public class Util {
 
     public static boolean containsURLInCase(String in) throws MalformedURLException {
         List<String> copy = Main.getInstance().getCrawlerHandler().getUrlsChecked();
-
-        if(in.contains("facebook")) return true;
-
-        String last = (copy.size() > 5) ? copy.get(copy.size() - 1) : "";
-        if (last.contains("=") && in.contains("=")) {
-            if (last.split("=")[0].equalsIgnoreCase(in.split("=")[0])) {
-                Logger.log("Similar seeming URL found:" + in + "  To:" + last, Logger.LogType.INFO);
-                return true;
-            }
-        } else if(last.contains("/") && in.contains("/")) {
-            URL path = new URL(in);
-            URL pathLast = new URL(last);
-            if(path.getPath().equalsIgnoreCase(pathLast.getPath())) {
-                Logger.log("Similar seeming URL found:" + path.getPath() + "  To:" + pathLast.getPath(), Logger.LogType.INFO);
-                return true;
+        for (String s : copy) {
+            if (s.contains("/") && in.contains("/")) {
+                URL path = new URL(in);
+                URL pathLast = new URL(s);
+                if (path.getPath().equalsIgnoreCase(pathLast.getPath())) {
+                    return true;
+                }
             }
         }
-        return Main.getInstance().getCrawlerHandler().getUrlsChecked().contains(in);
+        return false;
     }
 
     public static List<String> getDomainList() {
         List<String> domains = new ArrayList<>();
-        int https = "https://".length();
         Main.getInstance().getCrawlerHandler().getUrlsChecked().forEach(s -> {
-            if (s.indexOf("/", https) >= 0) {
-                String domain = s.substring(https, s.indexOf("/", https));
-                if (domains.contains(domain)) domains.add(domain);
-            } else {
-                domains.add(s);
+            if (s.split("/").length > 1) {
+                String domain = s.split("/")[2];
+                if (!domains.contains(domain)) domains.add(domain);
             }
         });
-
         return domains;
     }
 }

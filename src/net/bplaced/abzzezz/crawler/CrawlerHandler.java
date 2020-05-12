@@ -40,7 +40,7 @@ public class CrawlerHandler {
 
     public void newCrawler(String url) {
         Crawler crawler = new Crawler(url, keyword);
-        Logger.log("New Crawler Thread running: " + crawler.getName(), Logger.LogType.INFO);
+        //Logger.log("New Crawler Thread running: " + crawler.getName(), Logger.LogType.INFO);
         crawlers.add(crawler);
         crawler.run();
     }
