@@ -13,8 +13,6 @@ package net.bplaced.abzzezz;
 
 import net.bplaced.abzzezz.crawler.CrawlerHandler;
 
-import java.io.File;
-
 public class Main {
 
     private static final Main ins = new Main();
@@ -30,7 +28,7 @@ public class Main {
     }
 
     /**
-     *
+     *Start initial crawler
      */
     public void startThread() {
         this.crawlerHandler = new CrawlerHandler();
@@ -60,4 +58,6 @@ public class Main {
     public void setEntriesFound(int entriesFound) {
         this.entriesFound = entriesFound;
     }
+
+
 }

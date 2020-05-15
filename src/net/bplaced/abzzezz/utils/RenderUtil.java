@@ -10,6 +10,8 @@
 
 package net.bplaced.abzzezz.utils;
 
+import org.lwjgl.opengl.GL11;
+
 import java.awt.*;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -39,22 +41,18 @@ public class RenderUtil {
     public static void drawQuad(float xPos, float yPos, float width, float height, Color quadColor) {
         setupGL();
         glColor4f(quadColor.getRed() / 255.0F, quadColor.getGreen() / 255.0F, quadColor.getBlue() / 255.0F, quadColor.getAlpha() / 255.0F);
-        glBegin(GL_TRIANGLES);
+        glBegin(GL_TRIANGLE_STRIP);
         {
-            drawRectBasis(xPos, yPos, width, height);
+            drawTriangle(xPos, yPos, width, height);
+            drawTriangle(xPos + width, yPos + height, -width, -height);
         }
         glEnd();
         endGL();
     }
 
-    private static void drawRectBasis(float xPos, float yPos, float width, float height) {
+    private static void drawTriangle(float xPos, float yPos, float width, float height) {
         glVertex2f(xPos, yPos);
         glVertex2f(xPos, yPos + height);
         glVertex2f(xPos + width, yPos + height);
-
-        glVertex2f(xPos + width, yPos + height);
-        glVertex2f(xPos + width, yPos);
-        glVertex2f(xPos, yPos);
-
     }
 }

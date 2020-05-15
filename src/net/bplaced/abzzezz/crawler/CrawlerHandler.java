@@ -14,6 +14,7 @@ package net.bplaced.abzzezz.crawler;
 import ga.abzzezz.util.data.FileUtil;
 import net.bplaced.abzzezz.EngineCore;
 import net.bplaced.abzzezz.Main;
+import net.bplaced.abzzezz.utils.Util;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,7 +42,7 @@ public class CrawlerHandler {
             }
         }
         writeToFile("[Searching for keyword:" + Main.getInstance().getKeyword() + "]");
-        this.executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() / 2);;
+        this.executor = Executors.newFixedThreadPool(Util.maxProcessing);;
     }
 
     public void newCrawler(String url) {
@@ -55,5 +56,9 @@ public class CrawlerHandler {
 
     public List<String> getUrlsChecked() {
         return urlsChecked;
+    }
+
+    public File getFileIn() {
+        return fileIn;
     }
 }

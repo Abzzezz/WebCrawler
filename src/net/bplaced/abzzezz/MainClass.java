@@ -10,15 +10,15 @@ package net.bplaced.abzzezz;
 
 import net.bplaced.abzzezz.file.impl.DomainsSearched;
 import net.bplaced.abzzezz.file.impl.InfoFile;
+import net.bplaced.abzzezz.file.impl.ResultsSorted;
 import net.bplaced.abzzezz.file.impl.WebsitesSearched;
 import net.bplaced.abzzezz.ui.MainUi;
-
 import java.io.File;
 
 public class MainClass {
 
     /**
-     * Main Args URL, Keyword, Fileout, maxWebsites:
+     * Main Args File
      *
      * @param args
      */
@@ -29,6 +29,7 @@ public class MainClass {
         engineCore.getFileManager().getFiles().add(new DomainsSearched());
         engineCore.getFileManager().getFiles().add(new WebsitesSearched());
         engineCore.getFileManager().getFiles().add(new InfoFile());
+        engineCore.getFileManager().getFiles().add(new ResultsSorted());
         engineCore.start();
     }
 }

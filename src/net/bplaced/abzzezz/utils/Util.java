@@ -32,7 +32,14 @@ public class Util {
     public static long startTime;
 
     /**
+     * Get max cores for threadpool. to operate resource friendly but fast at the same time
+     */
+    public static int maxProcessing = Runtime.getRuntime().availableProcessors() > 12 ?
+            Runtime.getRuntime().availableProcessors() : Runtime.getRuntime().availableProcessors() / 2;
+
+    /**
      * Rewritten to just count and dont actually add to list
+     * Hardcoded because JSoup gives the HTML part as one string
      * @param in
      * @param keyword
      * @return
@@ -51,7 +58,6 @@ public class Util {
     }
 
     /**
-     *
      * @return
      */
     public static Color getDefaultColor() {
@@ -59,28 +65,30 @@ public class Util {
     }
 
     /**
-     * NEW!! NOW USING COPYONWRITEARRAYS! WOW
+     *
+     *
      * @param in
      * @return
      * @throws MalformedURLException
-     *
      */
     public synchronized static boolean containsURLInCase(String in) throws MalformedURLException {
-        List<String> copy =  Main.getInstance().getCrawlerHandler().getUrlsChecked();
+        List<String> copy = Main.getInstance().getCrawlerHandler().getUrlsChecked();
         for (String s : copy) {
-            URL path = new URL(in);
-            URL pathLast = new URL(s);
-            if (!path.getPath().isEmpty() && !pathLast.getPath().isEmpty()) {
-                if (path.getPath().equalsIgnoreCase(pathLast.getPath())) return true;
+            URL newURL = new URL(in);
+            URL checkURL = new URL(s);
+            if (!newURL.getPath().isEmpty() && !checkURL.getPath().isEmpty()) {
+                if (newURL.getPath().equalsIgnoreCase(checkURL.getPath())) return true;
             }
 
             if (copy.contains(in)) return true;
+
+
         }
         return false;
     }
 
     /**
-     *
+     * Throws malurlex when Host does not respond
      * @return
      */
     public static List<String> getDomainList() {

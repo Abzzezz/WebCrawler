@@ -16,7 +16,12 @@ import net.bplaced.abzzezz.Main;
 import net.bplaced.abzzezz.screens.Button;
 import net.bplaced.abzzezz.screens.Screen;
 import net.bplaced.abzzezz.utils.FontUtil;
+import net.bplaced.abzzezz.utils.RenderUtil;
 import net.bplaced.abzzezz.utils.Util;
+
+import java.awt.*;
+
+import static org.lwjgl.opengl.GL11.*;
 
 public class MainUi extends Screen {
 
@@ -25,9 +30,9 @@ public class MainUi extends Screen {
     @Override
     public void buttonPressed(float buttonID) {
         if (buttonID == 0) {
-            Main.getInstance().setUrl(Logger.logInput("Input URL"));
+            Main.getInstance().setUrl(Logger.logSwingInput("Input URL"));
         } else if (buttonID == 1) {
-            Main.getInstance().setKeyword(Logger.logInput("Input Keyword"));
+            Main.getInstance().setKeyword(Logger.logSwingInput("Input Keyword"));
         } else if (buttonID == 2) {
             Util.startTime = System.currentTimeMillis();
             new Thread(() -> {
@@ -42,11 +47,9 @@ public class MainUi extends Screen {
     public void init() {
         this.fontUtil = new FontUtil("BigNoodleTitling", 40);
         this.smaller = new FontUtil("BigNoodleTitling", 25);
-
         String[] buttonText = {"Set URL", "Set Keyword", "Start"};
-        for (int i = 0; i < buttonText.length; i++) {
-            this.getButtons().add(new Button(i, buttonText[i], 0, getHeight() - 30 - i * 30));
-        }
+        for (int i = 0; i < buttonText.length; i++) this.getButtons().add(new Button(i, buttonText[i], 0, getHeight() - 30 - i * 30));
+
         super.init();
     }
 
@@ -55,7 +58,7 @@ public class MainUi extends Screen {
     public void drawScreen() {
         fontUtil.drawString("Web Crawler", 0, 0, Util.getDefaultColor());
         if (Main.getInstance().getCrawlerHandler() != null) {
-            String s = "Crawlers active: " + Runtime.getRuntime().availableProcessors() / 2;
+            String s = "Crawlers active: " + Util.maxProcessing;
             smaller.drawString(s, getWidth() - smaller.getStringWidth(s), 0, Util.getDefaultColor());
             String s1 = "Websites searched: " + Main.getInstance().getCrawlerHandler().getUrlsChecked().size();
             smaller.drawString(s1, getWidth() - smaller.getStringWidth(s1), smaller.getHeight() * 2, Util.getDefaultColor());
